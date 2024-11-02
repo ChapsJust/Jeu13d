@@ -1,12 +1,18 @@
+using System.Collections;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    //Reference du Player Body et de la Camera
     [Header("Player Body")]
     [SerializeField]
-    private Transform playerBody;
+    private Transform playerBodyRef;
+    [SerializeField]
+    private Transform cameraRef;
 
+    //Player Body Principales Options
     [Header("Options")]
     [SerializeField]
     private float speed = 5f;
@@ -16,29 +22,46 @@ public class PlayerController : MonoBehaviour
     private float sprintSpeed = 8f;
     [SerializeField]
     private float crouchSpeed = 3f;
+    [SerializeField]
+    private float crouchOffSet = 0.5f;
+    [SerializeField]
+    private float crouchTransition = 5f;
 
-    [Header("BunnyHopOptions")]
+    [Header("Couteau Options")]
     [SerializeField]
-    private float maxBunnyHopSpeed = 10f;
-    [SerializeField]
-    private float bunnyHopAccelaration = 8f;
+    private GameObject couteauPrefab;
+    private BoxCollider couteauCollider;
 
     //Variables
+    private Animator animator;
     private Rigidbody rb;
     private Vector2 mouvementInput;
+    private Vector3 cameraOriginalPosition;
     private bool isJumping = false;
     private bool isGrounded = true;
     private bool isSprinting = false;
     private bool isCrouching = false;
 
+    private void Awake()
+    {
+        animator = couteauPrefab.GetComponent<Animator>();
+        couteauCollider = couteauPrefab.GetComponent<BoxCollider>();
+        couteauCollider.enabled = false;
+    }
+
     //Start
     private void Start()
     {
+        //RigidBody
         rb = GetComponent<Rigidbody>();
+        //Cherche la position de la camera
+        cameraOriginalPosition = cameraRef.localPosition;
     }
 
+    //Update pour les Inputs
     private void Update()
     {
+        //Regarde si le Joueur peut sauter ou pas 
         if (isJumping && isGrounded)
         {
             Jump();
@@ -47,11 +70,15 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = false;
         }
+
+        //Ajuste la camera si accrroupi ou pas
+        AjusterCameraCrouch();
     }
 
     //S'occupe des mouvements
     private void FixedUpdate()
     {
+        //Fonction pour bouger le joueur
         MovePlayer();
     }
 
@@ -59,14 +86,17 @@ public class PlayerController : MonoBehaviour
     private void MovePlayer()
     {
         //Direction Joueur
-        Vector3 forward = playerBody.forward;
-        Vector3 right = playerBody.right;
+        Vector3 forward = playerBodyRef.forward;
+        Vector3 right = playerBodyRef.right;
 
+        //Remet à zéro le Y de la camera
         forward.y = 0f;
         right.y = 0f;
+        //Normalise les vecteurs
         forward.Normalize();
         right.Normalize();
 
+        //Direction ou le joueur doit aller
         Vector3 direction = forward * mouvementInput.y + right * mouvementInput.x;
 
         //Permet de changer la vitesse du joueur en fonction de l'etat du joueur
@@ -76,8 +106,26 @@ public class PlayerController : MonoBehaviour
         else if(isSprinting)
             currentSpeed = sprintSpeed;
 
+        //Applique la vitesse au joueur en fonction de la direction et de la vitesse
         Vector3 mouvement = direction * currentSpeed;
         rb.linearVelocity = new Vector3(mouvement.x, rb.linearVelocity.y, mouvement.z);
+    }
+
+    //Je me suis insipiré de cette vidéo pour faire mon arme : https://www.youtube.com/watch?v=oAhgEbznVss
+    public void Attack()
+    {
+        Debug.Log("Attack");
+        animator.SetTrigger("Attack");
+        StartCoroutine(GestionAttack());
+    }
+
+    private IEnumerator GestionAttack()
+    {
+        yield return new WaitForSeconds(0.1f);
+        couteauCollider.enabled = true;
+
+        yield return new WaitForSeconds(0.5f);
+        couteauCollider.enabled = false;
     }
 
     //Permet d'ajouter une force en y avec Impulse
@@ -112,6 +160,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //OnSprint Input Bool
     public void OnSprint(InputAction.CallbackContext context)
     {
         if (context.started) 
@@ -120,12 +169,11 @@ public class PlayerController : MonoBehaviour
             isSprinting = false;
     }
 
+    //OnAttack Input Bool
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.action.triggered)
-        {
-            Debug.Log("Attack");
-        }
+        if(context.action.triggered)
+            Attack();
     }
 
     /// <summary>
@@ -135,12 +183,25 @@ public class PlayerController : MonoBehaviour
     public void OnCrouch(InputAction.CallbackContext context)
     {
         if (context.started)
-        {
             isCrouching = true;
-        }
         else if (context.canceled)
-        {
             isCrouching = false;
-        }
+    }
+
+    /// <summary>
+    /// Ajuster la camera en fonction de si le joueur est accroupi ou pas
+    /// </summary>
+    private void AjusterCameraCrouch()
+    {
+        Vector3 targetPosition;
+
+        //Si le joueur est accroupi alors la camera est plus basse sinon elle est à sa position de base 
+        if (isCrouching)
+            targetPosition = cameraOriginalPosition - new Vector3(0, crouchOffSet, 0);
+        else
+            targetPosition = cameraOriginalPosition;
+
+        //Lerp pour la transition de la camera
+        cameraRef.localPosition = Vector3.Lerp(cameraRef.localPosition, targetPosition, Time.deltaTime * crouchTransition);
     }
 }
