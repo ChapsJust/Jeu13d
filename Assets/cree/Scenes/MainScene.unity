@@ -169,6 +169,8 @@ MonoBehaviour:
   solPrefab: {fileID: 2640934962200550404, guid: 4e1bd038437158f4790f6a18bcf54cee, type: 3}
   murPrefab: {fileID: 3831228636095801240, guid: 7160f5aa2469a7644bc1c0eba2bde5f0, type: 3}
   murTorchPrefab: {fileID: 3831228636095801240, guid: 5eb91d4301882de41abcd8e985154bce, type: 3}
+  murBrisablePrefab: {fileID: 4326653293679315140, guid: c216227286ea3414d8b2b8fa1265ed93, type: 3}
+  murBrisableChance: 0.3
   toitPrefab: {fileID: 2640934962200550404, guid: c845aa078e672ef4e915cbeefbcf1aca, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

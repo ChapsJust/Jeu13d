@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded = true;
     private bool isSprinting = false;
     private bool isCrouching = false;
+    private bool isAttacking = false;
 
     private void Awake()
     {
@@ -70,6 +71,9 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = false;
         }
+
+        if(isAttacking)
+            Attack();
 
         //Ajuste la camera si accrroupi ou pas
         AjusterCameraCrouch();
@@ -114,9 +118,9 @@ public class PlayerController : MonoBehaviour
     //Je me suis insipiré de cette vidéo pour faire mon arme : https://www.youtube.com/watch?v=oAhgEbznVss
     public void Attack()
     {
-        Debug.Log("Attack");
         animator.SetTrigger("Attack");
         StartCoroutine(GestionAttack());
+        isAttacking = false;
     }
 
     private IEnumerator GestionAttack()
@@ -172,8 +176,10 @@ public class PlayerController : MonoBehaviour
     //OnAttack Input Bool
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if(context.action.triggered)
-            Attack();
+        if(context.started)
+            isAttacking = true;
+        else if (context.canceled)
+            isAttacking = false;
     }
 
     /// <summary>

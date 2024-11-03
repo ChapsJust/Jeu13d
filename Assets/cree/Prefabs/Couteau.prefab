@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8182494458399797251}
   - component: {fileID: 2871151796075538807}
+  - component: {fileID: 3035801305432623728}
   m_Layer: 0
   m_Name: Couteau
   m_TagString: Untagged
@@ -54,6 +55,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.4438504, y: 0.11766194, z: 0.0738447}
   m_Center: {x: -0.026990352, y: -0.025977485, z: -0.0021136422}
+--- !u!54 &3035801305432623728
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5446058980420737998}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &1744694037576867480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109,6 +137,10 @@ PrefabInstance:
     - target: {fileID: 23082743685162098, guid: 3561d375b004832418eaf9271450e06f, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23082743685162098, guid: 3561d375b004832418eaf9271450e06f, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 64298622298042970, guid: 3561d375b004832418eaf9271450e06f, type: 3}
       propertyPath: m_Convex
