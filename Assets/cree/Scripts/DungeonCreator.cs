@@ -9,6 +9,10 @@ public class DungeonCreator : MonoBehaviour
     [Header("Player")]
     [SerializeField]
     private GameObject playerPrefab;
+    [SerializeField]
+    private GameObject zombiePrefab;
+    [SerializeField]
+    private float zomvieSpawnChance = 0.2f;
 
     [Header("Taille de la grille")]
     [SerializeField]
@@ -105,6 +109,7 @@ public class DungeonCreator : MonoBehaviour
                 else
                 {
                     MurBrisableChance(x, y);
+                    EssaiSpawnZombie(grid[x, y]);
                 }
             }
         }
@@ -178,6 +183,10 @@ public class DungeonCreator : MonoBehaviour
         {
             Vector3 playerPosition = startCell.sol.transform.position + new Vector3(0, 1f, 0); //Éviter qu'il soit dans le sol
             Instantiate(playerPrefab, playerPosition, Quaternion.identity);
+
+            BoxCollider startCollider = startCell.sol.AddComponent<BoxCollider>();
+            startCollider.isTrigger = true;
+            startCollider.size = new Vector3(sizePrefabs, 1f, sizePrefabs);
         }
     }
 
@@ -336,6 +345,15 @@ public class DungeonCreator : MonoBehaviour
         }
     }
 
+    private void EssaiSpawnZombie(Cell cell)
+    {
+        if (zombiePrefab != null && Random.value < zomvieSpawnChance)
+        {
+            Vector3 position = cell.sol.transform.position + new Vector3(0, 1f, 0);
+            Instantiate(zombiePrefab, position, Quaternion.identity, parentContainer.transform);
+        }
+    }
+
     /// <summary>
     /// Représente une cellule dans la grille
     /// </summary>
@@ -353,4 +371,8 @@ public class DungeonCreator : MonoBehaviour
             this.sol = sol;
         }
     }
+
+    //GET SET
+    public GameObject StartGrid => startCell.sol;
+
 }
