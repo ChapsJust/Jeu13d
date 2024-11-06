@@ -1,8 +1,8 @@
 using NUnit.Framework;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonCreator : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField]
     private GameObject zombiePrefab;
     [SerializeField]
-    private float zomvieSpawnChance = 0.2f;
+    private float zombieSpawnChance = 0.2f;
 
     [Header("Taille de la grille")]
     [SerializeField]
@@ -41,6 +41,7 @@ public class DungeonCreator : MonoBehaviour
     private Cell endCell;
     private List<Cell> path;
     private GameObject parentContainer;
+    private NavMeshSurface navMeshSurface;
 
     /// <summary>
     /// Fonciton Awake
@@ -49,6 +50,9 @@ public class DungeonCreator : MonoBehaviour
     {
         // Création du parent container, de la grille et du chemin, de la salle, des toits, des murs et du joueur, en fonction de la taille de la grille, de la largeur et de la hauteur
         parentContainer = new GameObject("Salle Dungeon");
+        navMeshSurface = parentContainer.AddComponent<NavMeshSurface>();
+        navMeshSurface.collectObjects = CollectObjects.Children;
+
         CreationGrid();
         startCell = grid[0, 0];
         endCell = grid[largeur - 1, hauteur - 1];
@@ -65,6 +69,10 @@ public class DungeonCreator : MonoBehaviour
         CreationToit();
         CreationMur();
         InstancierJoueur();
+
+        navMeshSurface.BuildNavMesh();
+
+        SpawnZombie();
     }
 
     /// <summary>
@@ -109,7 +117,6 @@ public class DungeonCreator : MonoBehaviour
                 else
                 {
                     MurBrisableChance(x, y);
-                    EssaiSpawnZombie(grid[x, y]);
                 }
             }
         }
@@ -165,9 +172,7 @@ public class DungeonCreator : MonoBehaviour
                     Quaternion rotation = GetMurRotation(dx, dy);
 
                     // Instancie le mur ou la torche en fonction de la position et de la rotation
-                    GameObject mur = placerTorche ? murTorchPrefab : murPrefab;
-
-                    Instantiate(mur, position, rotation, parentContainer.transform);
+                    GameObject mur = Instantiate(placerTorche ? murTorchPrefab : murPrefab, position, rotation, parentContainer.transform);
                 }
             }
         }
@@ -325,32 +330,73 @@ public class DungeonCreator : MonoBehaviour
         {
             // Direction du mur brisable
             int dx = 0, dy = 0;
+            bool directionTrouver = false;
             if (y < hauteur - 1 && path.Contains(grid[x, y + 1]))
-                dy = 1;    
+            { 
+                dy = 1;
+                directionTrouver = true;
+            }
             else if (y > 0 && path.Contains(grid[x, y - 1]))
-                dy = -1;       
+            {
+                dy = -1;
+                directionTrouver = true;
+            }
             else if (x < largeur - 1 && path.Contains(grid[x + 1, y]))
-                dx = 1; 
-            else if (x > 0 && path.Contains(grid[x - 1, y])) 
+            {
+                dx = 1;
+                directionTrouver = true;
+            }
+            else if (x > 0 && path.Contains(grid[x - 1, y]))
+            {
                 dx = -1;
+                directionTrouver = true;
+            }
+
+            if (!directionTrouver)
+            {
+                Debug.LogWarning("Euh frérot la direction ?");
+                return;
+            }
 
             // Position du mur brisable en fonction de la direction du mur
-            float murOffset = sizePrefabs / 2 - 0.1f; 
+            float murOffset = sizePrefabs / 2f; 
             Vector3 offset = new Vector3(dx * murOffset, 0f, dy * murOffset);
             Vector3 position = grid[x, y].sol.transform.position + offset;
 
             // Rotation du mur brisable et l'instancie avec la position et la rotation
             Quaternion rotation = GetMurRotation(dx, dy);
+            //Fix pour que le mur quand dy == 1 rotation pas a la bonne place ??? Aucune idée donc je force la rotation
+            if (dy == -1)
+            {
+                rotation = Quaternion.Euler(0f, 180, 0f);
+            }
+
             Instantiate(murBrisablePrefab, position, rotation, parentContainer.transform);
         }
     }
 
+    /// <summary>
+    /// Si la condition est respecter fait spawn un zombie dans la cell 
+    /// </summary>
+    /// <param name="cell">Cell dans le path</param>
     private void EssaiSpawnZombie(Cell cell)
     {
-        if (zombiePrefab != null && Random.value < zomvieSpawnChance)
+        if (zombiePrefab != null)
         {
             Vector3 position = cell.sol.transform.position + new Vector3(0, 1f, 0);
             Instantiate(zombiePrefab, position, Quaternion.identity, parentContainer.transform);
+        }
+    }
+
+    /// <summary>
+    /// Pour chaque cellule dans le path 
+    /// </summary>
+    private void SpawnZombie()
+    {
+        foreach (Cell cell in path)
+        {
+            if(Random.value < zombieSpawnChance)
+                EssaiSpawnZombie(cell);
         }
     }
 

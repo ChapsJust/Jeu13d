@@ -43,6 +43,9 @@ public class PlayerController : MonoBehaviour
     private bool isCrouching = false;
     private bool isAttacking = false;
 
+    /// <summary>
+    /// Fonction Start
+    /// </summary>
     private void Awake()
     {
         animator = couteauPrefab.GetComponent<Animator>();
@@ -50,7 +53,9 @@ public class PlayerController : MonoBehaviour
         couteauCollider.enabled = false;
     }
 
-    //Start
+    /// <summary>
+    /// Fonction Start
+    /// </summary>
     private void Start()
     {
         //RigidBody
@@ -59,7 +64,9 @@ public class PlayerController : MonoBehaviour
         cameraOriginalPosition = cameraRef.localPosition;
     }
 
-    //Update pour les Inputs
+    /// <summary>
+    /// Update pour les Inputs
+    /// </summary>
     private void Update()
     {
         //Regarde si le Joueur peut sauter ou pas 
@@ -79,14 +86,18 @@ public class PlayerController : MonoBehaviour
         AjusterCameraCrouch();
     }
 
-    //S'occupe des mouvements
+    /// <summary>
+    /// S'occupe des mouvements
+    /// </summary>
     private void FixedUpdate()
     {
         //Fonction pour bouger le joueur
         MovePlayer();
     }
 
-    //Bouge le joueur en fonction du regard du joueur
+    /// <summary>
+    /// Bouge le joueur en fonction du regard du joueur
+    /// </summary>
     private void MovePlayer()
     {
         //Direction Joueur
@@ -115,7 +126,9 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector3(mouvement.x, rb.linearVelocity.y, mouvement.z);
     }
 
-    //Je me suis insipiré de cette vidéo pour faire mon arme : https://www.youtube.com/watch?v=oAhgEbznVss
+    /// <summary>
+    /// Je me suis insipiré de cette vidéo pour faire mon arme : https://www.youtube.com/watch?v=oAhgEbznVss
+    /// </summary>
     public void Attack()
     {
         animator.SetTrigger("Attack");
@@ -123,6 +136,10 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
+    /// <summary>
+    /// Desactive/Active la collison de l'arme
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator GestionAttack()
     {
         yield return new WaitForSeconds(0.1f);
@@ -132,7 +149,9 @@ public class PlayerController : MonoBehaviour
         couteauCollider.enabled = false;
     }
 
-    //Permet d'ajouter une force en y avec Impulse
+    /// <summary>
+    /// Permet d'ajouter une force en y avec Impulse
+    /// </summary>
     private void Jump()
     {
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -140,7 +159,10 @@ public class PlayerController : MonoBehaviour
         isJumping = false;
     }
 
-    //S'execute si une collision avec le sol IsGrouded = True
+    /// <summary>
+    /// S'execute si une collision avec le sol IsGrouded = True
+    /// </summary>
+    /// <param name="collision">collider</param>
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
@@ -149,13 +171,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //OnMove Input Values
+    /// <summary>
+    /// OnMove Input Values
+    /// </summary>
+    /// <param name="context"></param>
     public void OnMove(InputAction.CallbackContext context)
     {
         mouvementInput = context.action.ReadValue<Vector2>();
     }
 
-    //OnJump Input Bool
+    /// <summary>
+    /// OnJump Input Bool
+    /// </summary>
+    /// <param name="context"></param>
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.action.triggered)
@@ -164,7 +192,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //OnSprint Input Bool
+    /// <summary>
+    /// OnSprint Input Bool
+    /// </summary>
+    /// <param name="context"></param>
     public void OnSprint(InputAction.CallbackContext context)
     {
         if (context.started) 
@@ -173,7 +204,10 @@ public class PlayerController : MonoBehaviour
             isSprinting = false;
     }
 
-    //OnAttack Input Bool
+    /// <summary>
+    /// OnAttack Input Bool
+    /// </summary>
+    /// <param name="context"></param>
     public void OnAttack(InputAction.CallbackContext context)
     {
         if(context.started)

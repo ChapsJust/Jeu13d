@@ -13,9 +13,8 @@ public class PlayerCamera : MonoBehaviour
     [Header("Options")]
     [SerializeField]
     private float sensitivity = 100f;
-    [Tooltip("Smoothing factor for camera rotation. Lower value means more responsive.")]
-    [Range(0.01f, 0.5f)] 
-    public float smoothing = 0.05f;
+    [SerializeField]
+    private float smoothing = 0.05f;
 
     private Vector2 lookInput = Vector2.zero;
     private float xRotation = 0f;

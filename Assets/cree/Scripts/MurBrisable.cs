@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public class MurBrisable : MonoBehaviour
     private GameObject murCassePrefab;
 
     private AudioSource audioSource;
-    private float delaiSon = 0.3f;
+    private float delaiSon = 0.2f;
     private bool estCasser = false;
 
     private void Start()
@@ -54,8 +55,10 @@ public class MurBrisable : MonoBehaviour
             Vector3 impulse = (morceau.transform.position - transform.position) * 15f;
             morceau.AddForce(impulse, ForceMode.Impulse);
         }
-
         Destroy(gameObject, delaiSon);
+
+        MorceauxDespawn morceauxDespawn = murCasser.AddComponent<MorceauxDespawn>();
+        morceauxDespawn.StartDespawn();
     }
 }
 
