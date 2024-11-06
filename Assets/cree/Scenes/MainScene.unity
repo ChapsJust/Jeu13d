@@ -164,7 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 3125096785363022116, guid: 6fd20fc7d85f45d408443ea9c2a9a2b0, type: 3}
   zombiePrefab: {fileID: 2154950427523427296, guid: d710322f1a798cf4c830f6ed5a701a0a, type: 3}
-  zomvieSpawnChance: 0.4
+  zombieSpawnChance: 0.2
   largeur: 15
   hauteur: 15
   sizePrefabs: 4

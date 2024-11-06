@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5588834816591952394}
   - component: {fileID: 2062073075061268559}
   - component: {fileID: 5847766973092350040}
+  - component: {fileID: 4876385943107308082}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Enemy
@@ -118,6 +119,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bfcda8d6c82ea344935e987a6efa638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &4876385943107308082
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2154950427523427296}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
+  m_Controller: {fileID: 9100000, guid: 85f5d05170d8b3843b0b38c5884a6508, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2816699318589821234
 PrefabInstance:
   m_ObjectHideFlags: 0
