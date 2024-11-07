@@ -69,6 +69,8 @@ public class DungeonCreator : MonoBehaviour
         CreationToit();
         CreationMur();
         InstancierJoueur();
+        EndCellCollider(endCell);
+
 
         navMeshSurface.BuildNavMesh();
 
@@ -407,10 +409,38 @@ public class DungeonCreator : MonoBehaviour
     /// </summary>
     private void SpawnZombie()
     {
-        foreach (Cell cell in path)
+        //Je skip le premier cell Raison: Zombie spawn sur moi créant bug de collision
+        for (int i = 1; i < path.Count; i++)
         {
-            if(Random.value < zombieSpawnChance)
+            Cell cell = path[i];
+            if (Random.value < zombieSpawnChance)
                 EssaiSpawnZombie(cell);
+        }
+    }
+
+    /// <summary>
+    /// Fonction qui gère la collison a la derniere cell du dungeon et Rajoute le script de Trigger 
+    /// </summary>
+    /// <param name="EndCell">Param de ref pour la dernière cell</param>
+    private void EndCellCollider(Cell EndCell)
+    {
+        if (EndCell != null)
+        {
+            Vector3 endCellposition = EndCell.sol.transform.position + new Vector3(0, 0.5f, 0);
+
+            //Créer un gameObject et le positionne au le sol de fin
+            GameObject endCell = new GameObject("CellFin");
+            endCell.transform.position = endCellposition;
+            endCell.transform.parent = parentContainer.transform;
+
+            //BoxCollider en trigger sur le dernier Cell
+            BoxCollider endCellCollider = endCell.AddComponent<BoxCollider>();
+            endCellCollider.size = new Vector3(sizePrefabs, 1f, sizePrefabs);
+
+            //Rajoute le script pour detecter le joueur
+           CellEndTrigger cellEndTrigger = endCell.AddComponent<CellEndTrigger>();
+            //Du rajouter cela sinon probleme de ref
+            cellEndTrigger.finUIManager = FindFirstObjectByType<FinUIManager>();
         }
     }
 
