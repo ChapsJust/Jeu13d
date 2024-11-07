@@ -5,9 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/cree/Scenes/StartMenu.unity
+    guid: fbe0397bc323ecc4b87aba3dbde441e0
+  - enabled: 1
+    path: Assets/cree/Scenes/MainScene.unity
+    guid: 50a5d798e40137c4cb0c7d1cd0d05b29
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 6d6d0c35f1088664988e98ba96a124ee, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: eb91b732dc2bd1945ac816b908fea34c, type: 3}

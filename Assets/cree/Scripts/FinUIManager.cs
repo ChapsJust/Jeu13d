@@ -53,7 +53,7 @@ public class FinUIManager : MonoBehaviour
         Time.timeScale = 1f;
         Application.Quit();
 
-        // Si dans Éditeur cela est mieux et plus rapide !!!!
+        // Si dans Éditeur cela est mieux  !!!!
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #endif
