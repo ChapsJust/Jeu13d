@@ -72,6 +72,8 @@ public class DungeonCreator : MonoBehaviour
 
         navMeshSurface.BuildNavMesh();
 
+        PlaceMurBrisable();
+
         SpawnZombie();
     }
 
@@ -112,11 +114,6 @@ public class DungeonCreator : MonoBehaviour
                 {
                     Destroy(grid[x, y].sol);
                     grid[x, y] = null;
-                }
-                // Sinon on place un mur brisable aléatoirement
-                else
-                {
-                    MurBrisableChance(x, y);
                 }
             }
         }
@@ -317,6 +314,23 @@ public class DungeonCreator : MonoBehaviour
         }
 
         return neighbors;
+    }
+
+    /// <summary>
+    /// Fonction qui permet de placer les murs brisabeles
+    /// </summary>
+    private void PlaceMurBrisable()
+    {
+        for (int x = 0; x < largeur; x++)
+        {
+            for (int y = 0; y < hauteur; y++)
+            {
+                if (grid[x, y] != null && path.Contains(grid[x, y]))
+                {
+                    MurBrisableChance(x, y); 
+                }
+            }
+        }
     }
 
     /// <summary>

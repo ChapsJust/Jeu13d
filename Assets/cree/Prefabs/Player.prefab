@@ -650,6 +650,8 @@ MonoBehaviour:
   crouchSpeed: 1.5
   crouchOffSet: 0.5
   crouchTransition: 5
+  maxVie: 100
+  attaqueDegat: 50
   couteauPrefab: {fileID: 8458783941676211039}
 --- !u!114 &1497910185997136547
 MonoBehaviour:
@@ -1569,6 +1571,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7761892295885965309}
     m_Modifications:
+    - target: {fileID: 2871151796075538807, guid: 043dc0ca3493fa54386664142f99dd0c, type: 3}
+      propertyPath: m_Size.x
+      value: 1.1646622
+      objectReference: {fileID: 0}
+    - target: {fileID: 2871151796075538807, guid: 043dc0ca3493fa54386664142f99dd0c, type: 3}
+      propertyPath: m_Size.y
+      value: 0.4944914
+      objectReference: {fileID: 0}
+    - target: {fileID: 2871151796075538807, guid: 043dc0ca3493fa54386664142f99dd0c, type: 3}
+      propertyPath: m_Size.z
+      value: 0.95185465
+      objectReference: {fileID: 0}
+    - target: {fileID: 2871151796075538807, guid: 043dc0ca3493fa54386664142f99dd0c, type: 3}
+      propertyPath: m_Center.x
+      value: -0.15229739
+      objectReference: {fileID: 0}
+    - target: {fileID: 2871151796075538807, guid: 043dc0ca3493fa54386664142f99dd0c, type: 3}
+      propertyPath: m_Center.y
+      value: -0.21439426
+      objectReference: {fileID: 0}
+    - target: {fileID: 2871151796075538807, guid: 043dc0ca3493fa54386664142f99dd0c, type: 3}
+      propertyPath: m_Center.z
+      value: -0.4411188
+      objectReference: {fileID: 0}
     - target: {fileID: 2871151796075538807, guid: 043dc0ca3493fa54386664142f99dd0c, type: 3}
       propertyPath: m_IsTrigger
       value: 1

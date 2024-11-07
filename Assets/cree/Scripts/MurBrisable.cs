@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MurBrisable : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class MurBrisable : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("MurBrisableTrigger");
         if (other.CompareTag("Couteau"))
         {
             PrendreDegat();
@@ -55,6 +57,7 @@ public class MurBrisable : MonoBehaviour
             Vector3 impulse = (morceau.transform.position - transform.position) * 15f;
             morceau.AddForce(impulse, ForceMode.Impulse);
         }
+
         Destroy(gameObject, delaiSon);
 
         MorceauxDespawn morceauxDespawn = murCasser.AddComponent<MorceauxDespawn>();

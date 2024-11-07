@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float crouchTransition = 5f;
 
+    [Header("Player Vie")]
+    [SerializeField]
+    private int maxVie = 100;
+    private int currentVie;
+
     [Header("Couteau Options")]
     [SerializeField]
     private GameObject couteauPrefab;
@@ -62,6 +67,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         //Cherche la position de la camera
         cameraOriginalPosition = cameraRef.localPosition;
+        
+        currentVie = maxVie;
     }
 
     /// <summary>
@@ -147,6 +154,14 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         couteauCollider.enabled = false;
+    }
+
+    public void PrendreDegat(int degat, Vector3 knockback)
+    {
+        currentVie -= degat;
+        Debug.Log(currentVie);
+        if (currentVie < 0)
+            Debug.Log("Le Joueur est ciao");
     }
 
     /// <summary>
