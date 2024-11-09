@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
     private GameObject couteauPrefab;
     private BoxCollider couteauCollider;
 
+    [SerializeField]
+    private GameObject pausePanel;
+
     //Variables
     private Animator animator;
     private Rigidbody rb;
@@ -47,6 +50,7 @@ public class PlayerController : MonoBehaviour
     private bool isSprinting = false;
     private bool isCrouching = false;
     private bool isAttacking = false;
+    private bool isPause = false;
 
     /// <summary>
     /// Fonction Start
@@ -69,6 +73,9 @@ public class PlayerController : MonoBehaviour
         cameraOriginalPosition = cameraRef.localPosition;
         
         currentVie = maxVie;
+
+        if(pausePanel != null) { 
+            pausePanel.SetActive(false);}
     }
 
     /// <summary>
@@ -241,6 +248,31 @@ public class PlayerController : MonoBehaviour
             isCrouching = true;
         else if (context.canceled)
             isCrouching = false;
+    }
+
+    /// <summary>
+    /// Si le joueur appuie ESC cela active le menu pauses
+    /// </summary>
+    /// <param name="context"></param>
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.action.triggered)
+        {
+            UIPauseActive();
+        }
+    }
+
+    /// <summary>
+    /// Permet d'activer désactiver le UI j'ai du mettre le UI ici, car le player est génerer procédurallement
+    /// </summary>
+    private void UIPauseActive()
+    {
+        isPause = !isPause;
+        if(pausePanel != null)
+            pausePanel.SetActive(isPause);
+
+        Time.timeScale = isPause ? 0f : 1f;
+        Cursor.lockState = isPause ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
     /// <summary>

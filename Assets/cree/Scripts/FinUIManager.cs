@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class FinUIManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject finPanel;
+    [SerializeField]
 
     /// <summary>
     /// Désactive le Ui dès le début
@@ -14,7 +16,6 @@ public class FinUIManager : MonoBehaviour
         if (finPanel != null)
            finPanel.SetActive(false);
     }
-
 
     /// <summary>
     /// Fonction qui montre le panel de fin et ajuste le jeu en conséquence
