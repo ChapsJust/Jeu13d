@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -37,8 +38,13 @@ public class PlayerController : MonoBehaviour
     private GameObject couteauPrefab;
     private BoxCollider couteauCollider;
 
+    [Header("MenuPause")]
     [SerializeField]
     private GameObject pausePanel;
+    [SerializeField]
+    private UnityEvent EventPause;
+    [SerializeField]
+    private UnityEvent EventReprendre;
 
     //Variables
     private Animator animator;
@@ -270,6 +276,10 @@ public class PlayerController : MonoBehaviour
         isPause = !isPause;
         if(pausePanel != null)
             pausePanel.SetActive(isPause);
+        if (isPause)
+            EventPause?.Invoke();
+        else if (!isPause)
+            EventReprendre?.Invoke();
 
         Time.timeScale = isPause ? 0f : 1f;
         Cursor.lockState = isPause ? CursorLockMode.None : CursorLockMode.Locked;

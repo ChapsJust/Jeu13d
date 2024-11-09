@@ -1,6 +1,7 @@
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class PlayerCamera : MonoBehaviour
     private float sensitivity = 100f;
     [SerializeField]
     private float smoothing = 0.05f;
+    [SerializeField]
+    private Slider sensibilteSlider;
 
     private Vector2 lookInput = Vector2.zero;
     private float xRotation = 0f;
@@ -22,20 +25,39 @@ public class PlayerCamera : MonoBehaviour
     private float smoothPitchVelocity = 0f;
     private float currentXRotation = 0f;
 
-    //Cache et bloque la souris
+    /// <summary>
+    /// Permet d'update la sensibilté de la caméra
+    /// </summary>
+    /// <param name="newSensibilite">valeur du slider</param>
+    public void UpdateSensibilite(float newSensibilite)
+    {
+        sensitivity = sensibilteSlider.value;
+    }
+
+    /// <summary>
+    /// Cache et bloque la souris
+    /// </summary>
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if(sensibilteSlider != null ) 
+            sensitivity = sensibilteSlider.value;
     }
 
-    //OnLook Input Values
+    /// <summary>
+    /// OnLook Input Values
+    /// </summary>
+    /// <param name="context"></param>
     public void OnLook(InputAction.CallbackContext context)
     {
         lookInput = context.ReadValue<Vector2>();
     }
 
-    //Late update pour la caméra
+    /// <summary>
+    /// Late update pour la caméra
+    /// </summary>
     private void LateUpdate()
     {
         if (lookInput != Vector2.zero)

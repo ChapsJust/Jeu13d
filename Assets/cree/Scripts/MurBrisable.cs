@@ -35,6 +35,9 @@ public class MurBrisable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Fonction de perte de dégat du mur
+    /// </summary>
     public void PrendreDegat()
     {
         vieMur -= degats;
@@ -42,6 +45,9 @@ public class MurBrisable : MonoBehaviour
             Break();
     }
 
+    /// <summary>
+    /// Fonction qui gère se qui se produit quand le mur brisable doit casser
+    /// </summary>
     public void Break() 
     {
         estCasser = true;
